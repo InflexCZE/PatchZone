@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>net461</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.0.0.10" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <GameDir>D:\Games\Steam\steamapps\common\Endzone - A World Apart\</GameDir>
+    
+    <PatchZoneDir>$(GameDir)PatchZone\</PatchZoneDir>
+    <GameRefsDir>$(GameDir)Endzone_Data\Managed\</GameRefsDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PatchZone.Core\PatchZone.Core.csproj" />
+    <ProjectReference Include="..\PatchZone.Hatch\PatchZone.Hatch.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AfterTheEnd">
+      <HintPath>$(GameRefsDir)AfterTheEnd.dll</HintPath>
+    </Reference>
+    <Reference Include="uGameFramework">
+      <HintPath>$(GameRefsDir)uGameFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(GameRefsDir)Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameRefsDir)UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Zenject-usage">
+      <HintPath>$(GameRefsDir)Zenject-usage.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y &quot;$(TargetPath)&quot; &quot;$(PatchZoneDir)&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)PatchZone.Core.dll&quot; &quot;$(PatchZoneDir)&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)PatchZone.Hatch.dll&quot; &quot;$(PatchZoneDir)&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(PatchZoneDir)&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)System.ValueTuple.dll&quot; &quot;$(PatchZoneDir)&quot;" />
+  </Target>
+
+</Project>
