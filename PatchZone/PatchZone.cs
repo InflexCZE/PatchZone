@@ -66,7 +66,7 @@ namespace PatchZone
                 {
                     var baseCascade = GetServicePatchStack(service);
                     var proxyService = ServicePatcher.InstantiatePatch(patch, baseCascade);
-                    baseCascade.Add(proxyService);
+                    baseCascade.Insert(0, proxyService);
                 }
 
                 List<object> GetServicePatchStack(Type key)
