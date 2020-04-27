@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:PatchZone.GUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="TextBlock" x:Key="HeadlineText">
+            <Setter Property="FontSize" Value="20" />
+        </Style>
     </Application.Resources>
 </Application>

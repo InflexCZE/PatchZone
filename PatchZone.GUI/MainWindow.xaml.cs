@@ -160,5 +160,17 @@ namespace PatchZone.GUI
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(KnownModsData)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveModsData)));
         }
+
+        private void AddMod(object sender, RoutedEventArgs e)
+        {
+            var window = new AddModWindow(this.Config);
+            window.Owner = this;
+            window.Closed += (_, __) =>
+            {
+                NotifyConfigurationChanged();
+            };
+
+            window.Show();
+        }
     }
 }
