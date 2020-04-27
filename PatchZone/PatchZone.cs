@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HarmonyLib;
 using PatchZone.Core;
+using PatchZone.Core.Mods;
 using PatchZone.Hatch.Utils;
 using PatchZone.Mods;
 using PatchZone.Patcher;
@@ -24,15 +25,12 @@ namespace PatchZone
 
         public void LoadMods()
         {
-            var patchZone = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var modsBasePath = Path.Combine(patchZone, "Mods");
-
             foreach(var modInfo in this.Config.KnownMods)
             {
                 if(modInfo.Active == false)
                     continue;
 
-                var modPath = Path.Combine(modsBasePath, modInfo.Guid.ToString());
+                var modPath = ModUtils.GetModDirectory(modInfo);
                 var modContext = new ModContext(modPath);
                 this.LoadedMods.Add(modContext);
             }

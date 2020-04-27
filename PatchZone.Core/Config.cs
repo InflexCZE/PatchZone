@@ -40,7 +40,7 @@ namespace PatchZone.Core
     {
         public Guid Guid { get; set; }
         public bool Active { get; set; }
-        public string Version { get; set; }
+        //public string Version { get; set; }
         public string DisplayName { get; set; }
     }
 }

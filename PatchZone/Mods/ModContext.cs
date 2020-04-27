@@ -34,7 +34,7 @@ namespace PatchZone.Mods
                 CurrentLogLevel = ModLog.LogLevel.Normal
             };
 
-            var manifestPath = Path.Combine(this.SourcePath, "PatchZoneManifest.xml");
+            var manifestPath = ModUtils.GetManifestPath(this.SourcePath);
             this.Manifest = XML.Deserialize<ModManifest>(manifestPath);
             
             //TODO: Deserialize from manifest
