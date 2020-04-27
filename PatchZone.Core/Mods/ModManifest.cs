@@ -13,7 +13,7 @@ namespace PatchZone.Core.Mods
     [XmlRoot("PatchZoneManifest")]
     public class ModManifest
     {
-        public Guid GUID;
+        public Guid Guid;
         public string Icon;
         public string DisplayName;
         public string Description;

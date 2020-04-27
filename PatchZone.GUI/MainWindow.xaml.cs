@@ -85,7 +85,7 @@ namespace PatchZone.GUI
                     return Array.Empty<Guid>();
                 }
 
-                return selectedItems.Cast<ModInfo>().Select(x => x.GUID).ToArray();
+                return selectedItems.Cast<ModInfo>().Select(x => x.Guid).ToArray();
             }
         }
 
@@ -99,7 +99,7 @@ namespace PatchZone.GUI
 
         private void ActivateAllMods(object sender, MouseButtonEventArgs e)
         {
-            foreach (var mod in this.KnownModsData.Select(x => x.GUID).ToArray())
+            foreach (var mod in this.KnownModsData.Select(x => x.Guid).ToArray())
             {
                 SetModActive(mod, true);
             }
@@ -127,7 +127,7 @@ namespace PatchZone.GUI
 
         private void DeactivateAllMods(object sender, MouseButtonEventArgs e)
         {
-            foreach(var mod in this.ActiveModsData.Select(x => x.GUID).ToArray())
+            foreach(var mod in this.ActiveModsData.Select(x => x.Guid).ToArray())
             {
                 SetModActive(mod, false);
             }
@@ -143,7 +143,7 @@ namespace PatchZone.GUI
 
         private void SetModActive(Guid modId, bool active, bool notifyChange = true)
         {
-            var mod = this.Config.KnownMods.Find(x => x.GUID == modId);
+            var mod = this.Config.KnownMods.Find(x => x.Guid == modId);
             if(mod != null)
             {
                 mod.Active = active;

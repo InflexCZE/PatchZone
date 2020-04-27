@@ -32,7 +32,7 @@ namespace PatchZone
                 if(modInfo.Active == false)
                     continue;
 
-                var modPath = Path.Combine(modsBasePath, modInfo.GUID.ToString());
+                var modPath = Path.Combine(modsBasePath, modInfo.Guid.ToString());
                 var modContext = new ModContext(modPath);
                 this.LoadedMods.Add(modContext);
             }
