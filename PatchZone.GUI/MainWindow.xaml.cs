@@ -188,5 +188,17 @@ namespace PatchZone.GUI
 
             window.Show();
         }
+
+        private void CreateNewMod(object sender, RoutedEventArgs e)
+        {
+            var window = new CreateModWindow(this.Config);
+            window.Owner = this;
+            window.Closed += (_, __) =>
+            {
+                NotifyConfigurationChanged();
+            };
+
+            window.Show();
+        }
     }
 }

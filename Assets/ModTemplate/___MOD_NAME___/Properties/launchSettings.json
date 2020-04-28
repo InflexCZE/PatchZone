@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "___MOD_NAME___": {
+      "commandName": "Project"
+    },
+    "StartFromSteam": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files (x86)\\Steam\\Steam.exe",
+      "commandLineArgs": "-applaunch 933820"
+    }
+  }
+}

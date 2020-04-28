@@ -1,0 +1,69 @@
+﻿<Window x:Class="PatchZone.GUI.CreateModWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PatchZone.GUI"
+        mc:Ignorable="d"
+        Title="PatchZone" Height="230" Width="400">
+    <Grid
+        Margin="20"
+        >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0, 0, 0, 10" />
+                <Setter Property="AcceptsReturn" Value="False" />
+            </Style>
+        </Grid.Resources>
+
+        <TextBlock 
+            Text="Create mod"
+            Style="{StaticResource HeadlineText}"
+            Margin="0, 0, 0, 15"
+            />
+
+        <TextBlock
+            Grid.Row="1"
+            Text="Mod name"
+            />
+        <TextBox
+            Grid.Row="2"
+            Name="ModNameBox"
+            AcceptsReturn="False"
+            />
+
+        <TextBlock
+            Grid.Row="3"
+            Text="Mod GUID (Optional)"
+        />
+        <TextBox
+            Grid.Row="4"
+            Name="ModGUIDBox"
+            AcceptsReturn="False"
+        />
+
+        <Grid
+            Grid.Row="5"
+            >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <CheckBox Name="StartVSBox" IsChecked="true" Content="Start Visual Studio" VerticalAlignment="Center"/>
+            <Button Grid.Column="2" Content="Yeah, create my new cool mod!" Click="CreateMod"/>
+        </Grid>
+    </Grid>
+</Window>

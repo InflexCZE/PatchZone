@@ -169,7 +169,7 @@
 
             <Button Grid.Column="0" Content="Add mod" Click="AddMod"/>
             <Button Grid.Column="2" Content="Update mods"/>
-            <Button Grid.Column="4" Content="Create new mod"/>
+            <Button Grid.Column="4" Content="Create new mod" Click="CreateNewMod"/>
             <Button Grid.Column="6" Content="Save configuration"/>
             <Button Grid.Column="8" Content="Start game"/>
 

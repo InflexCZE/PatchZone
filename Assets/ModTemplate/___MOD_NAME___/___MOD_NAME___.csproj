@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>net461</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GameDir>___GAME_ROOT___</GameDir>
+    <PatchZoneDir>$(GameDir)PatchZone\</PatchZoneDir>
+    <GameRefsDir>$(GameDir)Endzone_Data\Managed\</GameRefsDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="PatchZone.Hatch">
+      <HintPath>$(PatchZoneDir)PatchZone.Hatch.dll</HintPath>
+    </Reference>
+    <Reference Include="AfterTheEnd">
+      <HintPath>$(GameRefsDir)AfterTheEnd.dll</HintPath>
+    </Reference>
+    <Reference Include="uGameFramework">
+      <HintPath>$(GameRefsDir)uGameFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(GameRefsDir)Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GameRefsDir)UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Zenject-usage">
+      <HintPath>$(GameRefsDir)Zenject-usage.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
