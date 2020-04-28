@@ -159,6 +159,22 @@ namespace PatchZone.GUI
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(KnownModsData)));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActiveModsData)));
+
+            UpdateColumnWidths(KnownModsView);
+            UpdateColumnWidths(ActiveModsView);
+
+            void UpdateColumnWidths(ListView listView)
+            {
+                foreach (var column in ((GridView) listView.View).Columns)
+                {
+                    if (double.IsNaN(column.Width))
+                    {
+                        //Force auto-resize of auto-width column
+                        column.Width = 0;
+                        column.Width = double.NaN;
+                    }
+                }
+            }
         }
 
         private void AddMod(object sender, RoutedEventArgs e)
