@@ -15,8 +15,7 @@ namespace PatchZone.Core.Mods
 
         static ModUtils()
         {
-            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            ModsStorageRoot = Path.Combine(basePath, "Mods");
+            ModsStorageRoot = Path.Combine(PatchZoneCore.PatchZoneInstallationPath, "Mods");
         }
 
         public static string GetModDirectory(ModInfo mod)
