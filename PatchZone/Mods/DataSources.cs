@@ -47,7 +47,7 @@ namespace PatchZone.Mods
                 var assemblyFile = Path.GetFileName(assemblyPath);
                 if(currentlyLoadedAssemblies.Contains(assemblyFile))
                 {
-                    //Assume all assemblies currenty loaded into app domain
+                    //Assume all assemblies currently loaded into app domain
                     //are part of PatchZone so don't reload them from mod folder
                     continue;
                 }
