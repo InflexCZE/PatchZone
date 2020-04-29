@@ -31,9 +31,9 @@ namespace PatchZone.Mods
             //TODO: Hack, remove when IDataSource is part of mod manifest
             var currentlyLoadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().Select(x =>
             {
-                var assemblyLocation = x.Location;
                 try
                 {
+                    var assemblyLocation = x.Location;
                     return Path.GetFileName(assemblyLocation);
                 }
                 catch
