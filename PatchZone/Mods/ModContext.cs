@@ -58,10 +58,11 @@ namespace PatchZone.Mods
                 if(typeof(IPatchZoneMod).IsAssignableFrom(type))
                 {
                     modHatchType = type;
-                    break;
+                    goto  HatchTypeFound;
                 }
             }
 
+            HatchTypeFound:
             this.Log.Log("Instantiating mod hatch " + modHatchType);
             this.Hatch = (IPatchZoneMod) Activator.CreateInstance(modHatchType);
             this.Hatch.Init(this);
