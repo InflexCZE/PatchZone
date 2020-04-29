@@ -28,6 +28,11 @@ namespace PatchZone.Core.Mods
             return Path.Combine(modDirectory, ManifestName);
         }
 
+        public static string GetReadableIdentifier(ModInfo mod)
+        {
+            return $"{mod.DisplayName} ({mod.Guid})";
+        }
+
         public static ModInfo BuildModInfoFromManifest(ModManifest manifest, bool active = false)
         {
             return new ModInfo

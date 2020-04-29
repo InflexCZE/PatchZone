@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PatchZone.Core;
 using PatchZone.Core.Mods;
+using PatchZone.Core.Printers;
 using PatchZone.Core.Utils;
 using PatchZone.Hatch;
 using PatchZone.Utils;
@@ -22,16 +23,18 @@ namespace PatchZone.Mods
 
         public List<(Type Service, Type PatchImpl)> ServicePatches { get; } = new List<(Type, Type)>();
 
-        public ModContext(string path)
+        public ModContext(ModInfo modInfo)
         {
-            this.SourcePath = path;
+            this.SourcePath = ModUtils.GetModDirectory(modInfo);
+
+            var logPrefix = '[' + ModUtils.GetReadableIdentifier(modInfo) + "] ";
 
             this.Log = new ModLog
             {
-                Debug = GlobalLog.Debug,
-                Error = GlobalLog.Error,
-                Normal = GlobalLog.Default,
-                CurrentLogLevel = ModLog.LogLevel.Normal
+                CurrentLogLevel = ModLog.LogLevel.Normal,
+                Debug = new PrefixPrinter(GlobalLog.Debug, logPrefix),
+                Error = new PrefixPrinter(GlobalLog.Error, logPrefix),
+                Normal = new PrefixPrinter(GlobalLog.Default, logPrefix)
             };
 
             var manifestPath = ModUtils.GetManifestPath(this.SourcePath);
@@ -46,22 +49,21 @@ namespace PatchZone.Mods
                 dataSource.Initialize(this);
             }
 
+            var modHatchType = typeof(NullHatch);
+
             foreach(var dataSource in dataSources)
             foreach(var assembly in dataSource.ManagedAssemblies)
             foreach(var type in assembly.GetExportedTypes())
             {
                 if(typeof(IPatchZoneMod).IsAssignableFrom(type))
                 {
-                    this.Hatch = (IPatchZoneMod) Activator.CreateInstance(type);
+                    modHatchType = type;
                     break;
                 }
             }
 
-            if(ReferenceEquals(this.Hatch, null))
-            {
-                this.Hatch = new NullHatch();
-            }
-
+            this.Log.Log("Instantiating mod hatch " + modHatchType);
+            this.Hatch = (IPatchZoneMod) Activator.CreateInstance(modHatchType);
             this.Hatch.Init(this);
         }
 

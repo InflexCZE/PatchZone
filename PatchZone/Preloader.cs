@@ -30,10 +30,13 @@ namespace PatchZone
                 LoadGameAssembly();
                 PatchGameStartup();
 
-                GlobalLog.Default.PrintLine("Loading mods");
-                PatchZone.Instance.LoadMods();
+                using(GlobalLog.Default.OpenScope("Loading mods", "Mods loaded"))
+                {
+                    PatchZone.Instance.LoadMods();
+                }
 
                 GlobalLog.Default.PrintLine("PatchZone loading finished");
+                GlobalLog.Default.PrintNewLine();
             }
             catch (Exception e)
             {

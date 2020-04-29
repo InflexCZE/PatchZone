@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using HarmonyLib;
 using PatchZone.Core;
 using PatchZone.Core.Mods;
+using PatchZone.Hatch;
 using PatchZone.Hatch.Utils;
 using PatchZone.Mods;
 using PatchZone.Patcher;
@@ -25,13 +26,22 @@ namespace PatchZone
 
         public void LoadMods()
         {
-            foreach(var modInfo in this.Config.KnownMods)
-            {
-                if(modInfo.Active == false)
-                    continue;
+            var knownMods = this.Config.KnownMods;
+            GlobalLog.Default.PrintLine("Total known mods: " + knownMods.Count);
 
-                var modPath = ModUtils.GetModDirectory(modInfo);
-                var modContext = new ModContext(modPath);
+            foreach (var modInfo in knownMods)
+            {
+                var modIdentifier = ModUtils.GetReadableIdentifier(modInfo);
+
+                if(modInfo.Active == false)
+                {
+                    GlobalLog.Debug.PrintLine("Skipping (not active): " + modIdentifier);
+                    continue;
+                }
+
+                GlobalLog.Default.PrintLine("Loading: " + modIdentifier);
+
+                var modContext = new ModContext(modInfo);
                 this.LoadedMods.Add(modContext);
             }
         }
@@ -44,54 +54,85 @@ namespace PatchZone
 
             this.GameStarted = true;
 
-            foreach(var modContext in this.LoadedMods)
+            using(GlobalLog.Default.OpenScope($"Invoking {nameof(OnBeforeGameStart)} for {this.LoadedMods.Count} mods", "Invoke done"))
             {
-                modContext.Hatch.OnBeforeGameStart();
+                try
+                {
+                    foreach (var modContext in this.LoadedMods)
+                    {
+                        modContext.Log.Log(nameof(OnBeforeGameStart));
+                        modContext.Hatch.OnBeforeGameStart();
+                    }
+                }
+                catch (Exception e)
+                {
+                    GlobalLog.Error.PrintLine("Error while invoking " + nameof(OnBeforeGameStart));
+                    GlobalLog.Error.PrintLine(e.ToString());
+                    throw;
+                }
             }
 
-            InstallServices();
+            GlobalLog.Default.PrintNewLine();
+
+            using (GlobalLog.Default.OpenScope($"Installing registered service patches for {this.LoadedMods.Count} mods", "Installation completed"))
+            {
+                try
+                {
+                    InstallServices();
+                }
+                catch (Exception e)
+                {
+                    GlobalLog.Error.PrintLine("Error while installing mod services");
+                    GlobalLog.Error.PrintLine(e.ToString());
+                    throw;
+                }
+            }
         }
 
         private void InstallServices()
         {
-            try
+            var vanillaServices = global::Kernel.Instance.Container;
+            var servicePatchStack = new Dictionary<Type, List<object>>();
+
+            foreach(var mod in this.LoadedMods)
             {
-                var vanillaServices = global::Kernel.Instance.Container;
-                var servicePatchStack = new Dictionary<Type, List<object>>();
+                var servicePatches = mod.ServicePatches;
 
-                foreach (var mod in this.LoadedMods)
-                foreach (var (service, patch) in mod.ServicePatches)
+                if(servicePatches.Count > 0)
                 {
-                    var baseCascade = GetServicePatchStack(service);
-                    var proxyService = ServicePatcher.InstantiatePatch(patch, baseCascade);
-                    baseCascade.Insert(0, proxyService);
-                }
-
-                List<object> GetServicePatchStack(Type key)
-                {
-                    if (servicePatchStack.TryGetValue(key, out var baseCascade) == false)
+                    using(mod.Log.Normal.OpenScope($"Installing {servicePatches.Count} service patches", "Done"))
                     {
-                        baseCascade = new List<object>();
-
-                        var vanilla = vanillaServices.Resolve(key);
-                        if (vanilla == null)
+                        foreach (var (service, patch) in servicePatches)
                         {
-                            throw new Exception("Vanilla service not found: " + key);
-                        }
+                            mod.Log.Log($"{service} -> {patch}");
 
-                        baseCascade.Add(vanilla);
-                        servicePatchStack.Add(key, baseCascade);
+                            var baseCascade = GetServicePatchStack(service);
+                            var proxyService = ServicePatcher.InstantiatePatch(patch, baseCascade);
+                            baseCascade.Insert(0, proxyService);
+                        }
+                    }
+                }
+            }
+
+            List<object> GetServicePatchStack(Type key)
+            {
+                if (servicePatchStack.TryGetValue(key, out var baseCascade) == false)
+                {
+                    baseCascade = new List<object>();
+
+                    var vanilla = vanillaServices.Resolve(key);
+                    if (vanilla == null)
+                    {
+                        throw new Exception("Vanilla service not found: " + key);
                     }
 
-                    return baseCascade;
+                    baseCascade.Add(vanilla);
+                    servicePatchStack.Add(key, baseCascade);
                 }
+
+                return baseCascade;
             }
-            catch (Exception e)
-            {
-                GlobalLog.Error.PrintLine("Error while installing mod services");
-                GlobalLog.Error.PrintLine(e.ToString());
-                throw;
-            }
+           
         }
 
 
