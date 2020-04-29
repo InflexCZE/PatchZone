@@ -90,7 +90,7 @@ namespace PatchZone.Core.Printers
 
         public FilePrinter(string path)
         {
-            this.File = new StreamWriter(System.IO.File.OpenWrite(path));
+            this.File = new StreamWriter(System.IO.File.Create(path));
         }
 
         public void Print(string s)
