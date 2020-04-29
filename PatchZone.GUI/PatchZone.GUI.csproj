@@ -123,4 +123,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mklink /J &quot;$(TargetDir)Assets&quot; &quot;$(ProjectDir)..\Assets&quot;" IgnoreExitCode="true" />
+  </Target>
 </Project>
