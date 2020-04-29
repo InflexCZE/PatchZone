@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
 using ModestTree;
+using PatchZone.Core.Utils;
 using PatchZone.Hatch;
 using PatchZone.Hatch.Annotations;
 using PatchZone.Utils;
