@@ -45,7 +45,7 @@ namespace PatchZone.Mods
             foreach (string assemblyPath in Directory.EnumerateFiles(modContext.SourcePath, "*.dll", SearchOption.AllDirectories))
             {
                 var assemblyFile = Path.GetFileName(assemblyPath);
-                if(currentlyLoadedAssemblies.Contains(assemblyFile))
+                if(currentlyLoadedAssemblies.Add(assemblyFile) == false)
                 {
                     //Assume all assemblies currently loaded into app domain
                     //are part of PatchZone so don't reload them from mod folder
