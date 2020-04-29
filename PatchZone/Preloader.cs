@@ -37,7 +37,7 @@ namespace PatchZone
             }
             catch (Exception e)
             {
-                GlobalLog.Error.PrintLine("Exception PatchZone during init:");
+                GlobalLog.Error.PrintLine("Exception during PatchZone init:");
                 GlobalLog.Error.PrintLine(e.ToString());
                 Environment.Exit(1);
             }
