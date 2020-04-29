@@ -57,7 +57,7 @@ namespace PatchZone.Hatch
         }
     }
 
-    public static class PatchZoneContext
+    public static class PatchZoneContextExtensions
     {
         public static void RegisterProxyService<TService, TProxyService>(this IPatchZoneContext context)
         {
