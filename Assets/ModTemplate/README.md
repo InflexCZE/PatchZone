@@ -13,4 +13,4 @@ ___MOD_NAME_FULL___ can make the game unstable and/or crash.
 Edited worlds may get corrupted after save and/or may not function properly when switched back to survival.
 Loading ___MOD_NAME_FULL___ to version of the game it is not released for is not advised. It is likely that it will not load and/or not function properly.
 
-Under no circumstances shall the author(s) be held responsible or liable in any way for any claims, damages, losses, expenses, costs or liabilities whatsoever caused directly or indirectly by CreativeZone and/or derived software.
+Under no circumstances shall the author(s) be held responsible or liable in any way for any claims, damages, losses, expenses, costs or liabilities whatsoever caused directly or indirectly by PatchZone and/or ___MOD_NAME_FULL___ and/or derived software.
