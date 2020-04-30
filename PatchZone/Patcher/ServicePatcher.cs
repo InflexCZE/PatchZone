@@ -149,7 +149,7 @@ namespace PatchZone.Patcher
                     matchFound:;
                 }
 
-                var proxy = DynamicTypeBuilder.Create($"{fullInterface.Name}_" + proxyType.Name + "_Proxy");
+                var proxy = DynamicTypeBuilder.Create($"{fullInterface.Name}_" + proxyType.Name + proxyType.GetHashCode() + "_Proxy");
                 proxy.Type.AddInterfaceImplementation(fullInterface);
 
                 var baseIndexToField = new Dictionary<int, FieldBuilder>();
