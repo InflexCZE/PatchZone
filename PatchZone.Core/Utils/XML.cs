@@ -20,8 +20,14 @@ namespace PatchZone.Core.Utils
 
         public static T Deserialize<T>(Stream stream)
         {
-            var xml =new XmlSerializer(typeof(T));
+            var xml = new XmlSerializer(typeof(T));
             return (T) xml.Deserialize(stream);
+        }
+
+        public static T Deserialize<T>(TextReader reader)
+        {
+            var xml = new XmlSerializer(typeof(T));
+            return (T)xml.Deserialize(reader);
         }
 
         public static void Serialize<T>(string path, T data)

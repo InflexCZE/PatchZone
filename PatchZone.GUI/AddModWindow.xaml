@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PatchZone.GUI"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="PatchZone" Height="550" Width="350" d:DataContext="{d:DesignInstance local:AddModWindow }">
     <Window.Resources>
@@ -18,8 +19,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
 
-            <RowDefinition Name="LocalModArea" Height="*" />
-            <RowDefinition Name="RemoteModArea" Height="0" />
+            <RowDefinition Name="LocalModArea" Height="0" />
+            <RowDefinition Name="RemoteModArea" Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -50,6 +51,72 @@
         </ListView>
 
         <Grid
+            Grid.Row="3"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                
+                <RowDefinition Height="0" Name="ProgressIndicatorRow" />
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0, 0, 0, 10" />
+                    <Setter Property="AcceptsReturn" Value="False" />
+                </Style>
+            </Grid.Resources>
+            
+            <TextBlock Text="ModUrl" />
+            <TextBox 
+                Grid.Row="1"
+                Name="ModURLBox"
+                TextChanged="RemoteModUrlChanged"
+                />
+
+            <TextBlock
+                Grid.Row="2"
+                Name="ModNameText"
+                Style="{StaticResource HeadlineText}"
+                Margin="0, 10, 0, 5"
+                />
+
+            <ScrollViewer
+                Grid.Row="3"
+                Margin="0, 0, 0, 10"
+                VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Disabled"
+                >
+                <TextBlock
+                    Margin="5"
+                    Name="ModDescriptionText"
+                    TextWrapping="WrapWithOverflow"
+                    />
+            </ScrollViewer>
+            
+            <StackPanel
+                Grid.Row="4"
+                Orientation="Vertical"
+                >
+                <fa:ImageAwesome
+                    Spin="True" 
+                    Height="60"
+                    Icon="Refresh" 
+                    SpinDuration="1"
+                    />
+                <TextBlock 
+                    Margin="5"
+                    Name="ProgressText"
+                    Text="Progress indicator..." 
+                    HorizontalAlignment="Center"
+                    />
+            </StackPanel>
+
+        </Grid>
+
+        <Grid
             Grid.Row="4"
             Margin="0, 10, 0, 0"
             >
@@ -65,8 +132,8 @@
                 </Style>
             </Grid.Resources>
             
-            <Button Grid.Column="0" Content="Refresh"  Click="Refresh"/>
-            <Button Grid.Column="2" Content="Add" Click="AddMod"/>
+            <Button Name="RefreshButton" Grid.Column="0" Content="Refresh"  Click="Refresh"/>
+            <Button Name="AddButton" Grid.Column="2" Content="Add" Click="AddMod"/>
         </Grid>
     </Grid>
 </Window>

@@ -23,6 +23,11 @@ namespace PatchZone.Core.Mods
             return Path.Combine(ModsStorageRoot, mod.Guid.ToString());
         }
 
+        public static string GetModDirectory(ModManifest mod)
+        {
+            return Path.Combine(ModsStorageRoot, mod.Guid.ToString());
+        }
+
         public static string GetManifestPath(string modDirectory)
         {
             return Path.Combine(modDirectory, ManifestName);
