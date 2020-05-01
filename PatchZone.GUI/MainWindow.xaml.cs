@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PatchZone.Core;
+using PatchZone.Core.Mods;
 
 namespace PatchZone.GUI
 {
@@ -199,6 +201,72 @@ namespace PatchZone.GUI
             };
 
             window.Show();
+        }
+
+        private void RemoveMod(object sender, RoutedEventArgs e)
+        {
+            var modInfos = this.SelectedMods.Select(guid => this.Config.KnownMods.Find(x => x.Guid == guid)).ToArray();
+
+            if (modInfos.Length == 0)
+                return;
+
+            var nl = Environment.NewLine;
+            var message = "This operation will delete following mods:" + nl;
+            message += string.Join(nl, modInfos.Select(x => $" - {x.DisplayName}"));
+            message += nl + nl + "Are you sure?";
+            var result = MessageBox.Show(message, "Delete mods", MessageBoxButton.OKCancel);
+
+            if(result == MessageBoxResult.OK)
+            {
+                foreach(var mod in modInfos)
+                {
+                    var modDirectory = ModUtils.GetModDirectory(mod);
+                    if(Directory.Exists(modDirectory))
+                    {
+                        try
+                        {
+                            Directory.Delete(modDirectory, true);
+                        }
+                        catch
+                        {
+                            var caption = "Error while deleting mod";
+                            var error = "PatchZone could not delete all data of the following mod:" + nl;
+                            error += $" - {ModUtils.GetReadableIdentifier(mod)}" + nl + nl;
+                            error += "This usually happens when the game is still running or mod assets are open in dev tools." + nl;
+                            error += "Please close the game and all dev tools before continuing.";
+                            result = MessageBox.Show(error, caption, MessageBoxButton.OKCancel);
+
+                            if(result == MessageBoxResult.Cancel)
+                            {
+                                return;
+                            }
+
+                            try
+                            {
+                                Directory.Delete(modDirectory, true);
+                            }
+                            catch(Exception ex)
+                            {
+                                error = "Repeated attempt to delete data of the following mod failed:" + nl;
+                                error += $" - {ModUtils.GetReadableIdentifier(mod)}" + nl + nl;
+                                error += "Please delete following directory to finish the cleanup process:" + nl;
+                                error += modDirectory + nl + nl;
+
+                                result = MessageBox.Show(error, caption, MessageBoxButton.OKCancel);
+
+                                if (result == MessageBoxResult.Cancel)
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    this.Config.KnownMods.Remove(mod);
+                }
+
+                NotifyConfigurationChanged();
+            }
         }
     }
 }
