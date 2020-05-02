@@ -34,7 +34,7 @@ To uninstall PatchZone completely:
 3) Optionally: use "Verify integrity of game files" feature in Steam (or equivalent of your installer).
 
 # Contribution Welcomed
-If you feel like there is something missing in the PatchZone, find bugs or room for improvements, feel free to open an issue or commit pull request directly. PatchZone community-made project, by community for community. If you land a hand everyone will benefit.
+If you feel like there is something missing in the PatchZone, find bugs or room for improvements, feel free to open an issue or commit pull request directly. PatchZone is community-made project, by community for community. If you land a hand everyone will benefit.
 
 # Disclamer
 PatchZone can make the game unstable and/or crash.
