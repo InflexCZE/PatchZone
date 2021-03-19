@@ -39,10 +39,11 @@ namespace PatchZone
                     continue;
                 }
 
-                GlobalLog.Default.PrintLine("Loading: " + modIdentifier);
-
-                var modContext = new ModContext(modInfo);
-                this.LoadedMods.Add(modContext);
+                using(GlobalLog.Default.OpenScope("Loading: " + modIdentifier, "Finished loading: " + modIdentifier))
+                {
+                    var modContext = new ModContext(modInfo);
+                    this.LoadedMods.Add(modContext);
+                }
             }
         }
         

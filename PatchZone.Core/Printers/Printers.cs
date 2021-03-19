@@ -107,6 +107,7 @@ namespace PatchZone.Core.Printers
         public void PrintNewLine()
         {
             File.WriteLine();
+            File.Flush();
             this.InsertIndent = true;
         }
 

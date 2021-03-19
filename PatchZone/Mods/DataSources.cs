@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using ModestTree;
 using PatchZone.Core.Mods;
 using PatchZone.Hatch;
+using PatchZone.Hatch.Utils;
+using PatchZone.Utils;
 
 namespace PatchZone.Mods
 {
@@ -52,6 +54,7 @@ namespace PatchZone.Mods
                     continue;
                 }
 
+                GlobalLog.Default.PrintLine("ManagedDllSource: Loading assembly " + assemblyPath);
                 var assembly = Assembly.LoadFile(assemblyPath);
                 this.Assemblies.Add(assembly);
             }
