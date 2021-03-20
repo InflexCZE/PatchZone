@@ -1,4 +1,4 @@
-# PatchZone - Modding platform for EndZone a World apart
+# PatchZone - Modding platform for EndZone
 PatchZone is a modding platform for EndZone a World apart survival city builder game ([Endzone-Game.com](https://endzone-game.com/)). 
 <br/>
 *Free modders from pain of bootloading their mods into the game and give players simple GUI to install mods!*
