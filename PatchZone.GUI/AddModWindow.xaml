@@ -132,8 +132,8 @@
                 </Style>
             </Grid.Resources>
             
-            <Button Name="RefreshButton" Grid.Column="0" Content="Refresh"  Click="Refresh"/>
-            <Button Name="AddButton" Grid.Column="2" Content="Add" Click="AddMod"/>
+            <Button Name="RefreshButton" Grid.Column="0" Content="Refresh"  Click="OnRefreshClicked"/>
+            <Button Name="AddButton" Grid.Column="2" Content="Add" Click="OnAddModClicked" IsEnabled="False"/>
         </Grid>
     </Grid>
 </Window>

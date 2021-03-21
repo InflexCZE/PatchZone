@@ -123,26 +123,20 @@ namespace PatchZone.GUI
 
             otherArea.Height = new GridLength(0);
             currentArea.Height = new GridLength(1, GridUnitType.Star);
-        }
 
-        private void Refresh(object sender, RoutedEventArgs e)
-        {
-            switch(this.SelectedModType)
+            //Don't trigger update immediately when window opens
+            if(e.RemovedItems?.Count > 0)
             {
-                case ModType.Local:
-                    OnPropertyChanged(nameof(NewLocalMods));
-                    break;
-
-                case ModType.Remote:
-                    RefreshRemoteMod(false);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
+                DoRefresh(false);
             }
         }
 
-        private async void AddMod(object sender, RoutedEventArgs e)
+        private void OnRefreshClicked(object sender, RoutedEventArgs e)
+        {
+            DoRefresh(false);
+        }
+
+        private async void OnAddModClicked(object sender, RoutedEventArgs e)
         {
             switch(this.SelectedModType)
             {
@@ -250,12 +244,37 @@ namespace PatchZone.GUI
 
         private void RemoteModUrlChanged(object sender, TextChangedEventArgs e)
         {
-            RefreshRemoteMod(true);
+            DoRefresh(true);
+        }
+
+        private async void DoRefresh(bool interactiveUpdate)
+        {
+            bool? enableAddButton;
+            switch (this.SelectedModType)
+            {
+                case ModType.Local:
+                    OnPropertyChanged(nameof(NewLocalMods));
+                    enableAddButton = this.NewLocalMods.Any();
+                    break;
+
+                case ModType.Remote:
+                    this.AddButton.IsEnabled = false;
+                    enableAddButton = await RefreshRemoteMod(interactiveUpdate);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if(enableAddButton.HasValue)
+            {
+                this.AddButton.IsEnabled = enableAddButton.Value;
+            }
         }
         
         private int RemoteUrlIndex;
         private Release SelectedRemoteRelease;
-        private async void RefreshRemoteMod(bool addDelay)
+        private async Task<bool?> RefreshRemoteMod(bool addDelay)
         {
             this.RemoteUrlIndex++;
             this.ModURLBox.BorderBrush = this.DefaultBorderBrush;
@@ -264,7 +283,7 @@ namespace PatchZone.GUI
             if(match.Success == false)
             {
                 this.ModURLBox.BorderBrush = Brushes.Red;
-                return;
+                return false;
             }
 
             var taskIndex = this.RemoteUrlIndex;
@@ -277,12 +296,12 @@ namespace PatchZone.GUI
             }
 
             if(taskIndex != this.RemoteUrlIndex)
-                return;
+                return null;
 
             while(NotifyBackgroundTaskRunning(true) == false)
             {
                 if (taskIndex != this.RemoteUrlIndex)
-                    return;
+                    return null;
 
                 await Task.Delay(TimeSpan.FromMilliseconds(50));
             }
@@ -298,13 +317,13 @@ namespace PatchZone.GUI
                 var latestRelease = await DownloadLatestReleaseAsync(userRepositoryPair);
 
                 if(taskIndex != this.RemoteUrlIndex)
-                    return;
+                    return null;
 
                 this.ProgressText.Text = "Downloading manifest";
                 var modManifest = await DownloadModManifestAsync(latestRelease, userRepositoryPair);
 
                 if(taskIndex != this.RemoteUrlIndex)
-                    return;
+                    return null;
 
                 latestRelease.Manifest = modManifest;
 
@@ -316,14 +335,17 @@ namespace PatchZone.GUI
             catch(Exception exception)
             {
                 if(taskIndex != this.RemoteUrlIndex)
-                    return;
+                    return null;
 
                 this.ModDescriptionText.Text = "Error occured during mod download:" + Environment.NewLine + exception.Message;
+                return false;
             }
             finally
             {
                 NotifyBackgroundTaskRunning(false);
             }
+
+            return true;
         }
 
         private bool BackgroundTaskRunning;
